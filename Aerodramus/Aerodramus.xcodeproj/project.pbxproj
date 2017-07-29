@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B21AE0C1F2B11D70035B82B /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21AE0B1F2B11D70035B82B /* Promise.swift */; };
+		5B21AE0D1F2B11DB0035B82B /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21AE0B1F2B11D70035B82B /* Promise.swift */; };
 		5BE95E6B1F2ADB33003D4D97 /* Aerodramus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE95E611F2ADB33003D4D97 /* Aerodramus.framework */; };
 		5BE95E701F2ADB33003D4D97 /* AerodramusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE95E6F1F2ADB33003D4D97 /* AerodramusTests.swift */; };
 		5BE95E721F2ADB33003D4D97 /* Aerodramus.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BE95E641F2ADB33003D4D97 /* Aerodramus.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5B21AE0B1F2B11D70035B82B /* Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		5BE95E611F2ADB33003D4D97 /* Aerodramus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aerodramus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BE95E641F2ADB33003D4D97 /* Aerodramus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Aerodramus.h; sourceTree = "<group>"; };
 		5BE95E651F2ADB33003D4D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -53,6 +56,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5B21AE0A1F2B11A40035B82B /* Promise */ = {
+			isa = PBXGroup;
+			children = (
+				5B21AE0B1F2B11D70035B82B /* Promise.swift */,
+			);
+			path = Promise;
+			sourceTree = "<group>";
+		};
 		5BE95E571F2ADB32003D4D97 = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				5BE95E7B1F2ADBB1003D4D97 /* Callbacks */,
+				5B21AE0A1F2B11A40035B82B /* Promise */,
 				5BE95E641F2ADB33003D4D97 /* Aerodramus.h */,
 				5BE95E651F2ADB33003D4D97 /* Info.plist */,
 			);
@@ -208,6 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BE95E7D1F2ADBBF003D4D97 /* Callbacks.swift in Sources */,
+				5B21AE0C1F2B11D70035B82B /* Promise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +230,7 @@
 			files = (
 				5BE95E7E1F2ADBBF003D4D97 /* Callbacks.swift in Sources */,
 				5BE95E701F2ADB33003D4D97 /* AerodramusTests.swift in Sources */,
+				5B21AE0D1F2B11DB0035B82B /* Promise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
