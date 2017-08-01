@@ -9,6 +9,7 @@
 import Foundation
 
 public struct CallbacksOptions : OptionSet {
+    
     public let rawValue: UInt
     public init(rawValue value: UInt) {
         rawValue = value
@@ -23,9 +24,11 @@ public struct CallbacksOptions : OptionSet {
     public static let memory        = CallbacksOptions(rawValue: 1 << 1)
     /// StopOnFalse: interrupt callings when a callback returns false
     public static let stopOnFalse   = CallbacksOptions(rawValue: 1 << 2)
+    
 }
 
 extension CallbacksOptions : CustomStringConvertible {
+    
     /// A textual representation of this instance
     public var description: String {
         let optionDescriptionMap = [
@@ -41,9 +44,11 @@ extension CallbacksOptions : CustomStringConvertible {
         }).joined(separator: "|")
         return "[\(optionDescrition)]"
     }
+    
 }
 
 private struct CallbacksFlags : OptionSet {
+    
     let rawValue: UInt
     init(rawValue value: UInt) {
         rawValue = value
@@ -56,6 +61,7 @@ private struct CallbacksFlags : OptionSet {
     static let firing   = CallbacksFlags(rawValue: 1 << 1)
     /// Locked: flag to prevent firing
     static let locked   = CallbacksFlags(rawValue: 1 << 2)
+    
 }
 
 public class Callbacks<Argument, Result> {
@@ -204,9 +210,11 @@ public class Callbacks<Argument, Result> {
     public func isFired() -> Bool {
         return flags.contains(.fired)
     }
+    
 }
 
 extension Callbacks : CustomDebugStringConvertible {
+    
     /// A textual representation of this instance, suitable for debugging.
     public var debugDescription: String {
         return "<\(type(of: self)): \(Unmanaged.passUnretained(self).toOpaque()); options = \(options)>"

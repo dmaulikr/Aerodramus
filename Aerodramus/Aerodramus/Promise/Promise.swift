@@ -9,11 +9,14 @@
 import Foundation
 
 private enum PromiseSettled<T> {
-    case resolved(T?)
-    case rejected(Error?)
+    
+    case resolved(T)
+    case rejected(Error)
+
 }
 
 extension PromiseSettled : CustomStringConvertible {
+    
     var description: String {
         switch self {
         case .resolved(let value):
@@ -22,14 +25,18 @@ extension PromiseSettled : CustomStringConvertible {
             return ".rejected(\(String(describing: error)))"
         }
     }
+    
 }
 
 private enum PromiseStates<T> {
+    
     case pending
     case settled(PromiseSettled<T>)
+    
 }
 
 extension PromiseStates : CustomStringConvertible {
+    
     var description: String {
         switch self {
         case .pending:
@@ -38,20 +45,31 @@ extension PromiseStates : CustomStringConvertible {
             return ".settled(\(settled))"
         }
     }
+    
 }
 
 
-public class Promise<Result> {
+open class Promise<Result> {
+    
+    deinit {
+        print("deinit \(self)")
+    }
     
     private var state: PromiseStates<Result> = .pending
     
-    fileprivate var tuples = (
-        doneFilters: Callbacks<Result?, Void>(options: [.once, .memory]),
-        failFilters: Callbacks<Error?, Void>(options: [.once, .memory]),
-        progressFilters: Callbacks<Progress?, Void>(options: [.memory])
+    private var tuples = (
+        doneFilters: Callbacks<Result, Void>(options: [.once, .memory]),
+        failFilters: Callbacks<Error, Void>(options: [.once, .memory]),
+        progressFilters: Callbacks<Progress, Void>(options: [.memory])
     )
     
-    fileprivate init() {
+    public typealias Deferred = (
+        resolve: (_ result: Result) -> Void,
+        reject: (_ error: Error) -> Void,
+        notify: (_ progress: Progress) -> Void
+    )
+    
+    public init(_ operation: (_ deferred: Deferred) -> Void) {
         tuples.doneFilters.add({ [weak self] in self?.state = .settled(.resolved($0)) })
             .add({ [weak self] _ in self?.tuples.failFilters.disable() })
             .add({ [weak self] _ in self?.tuples.progressFilters.lock() })
@@ -59,22 +77,28 @@ public class Promise<Result> {
         tuples.failFilters.add({ [weak self] in self?.state = .settled(.rejected($0)) })
             .add({ [weak self] _ in self?.tuples.doneFilters.disable() })
             .add({ [weak self] _ in self?.tuples.progressFilters.lock() })
+
+        operation((
+            { self.tuples.doneFilters.fire(with: $0) },
+            { self.tuples.failFilters.fire(with: $0) },
+            { self.tuples.progressFilters.fire(with: $0) }
+        ))
     }
     
     @discardableResult
-    public func done(_ filter: @escaping (Result?) -> Void) -> Self {
+    public func done(_ filter: @escaping (Result) -> Void) -> Self {
         tuples.doneFilters.add(filter)
         return self
     }
     
     @discardableResult
-    public func fail(_ filter: @escaping (Error?) -> Void) -> Self {
+    public func fail(_ filter: @escaping (Error) -> Void) -> Self {
         tuples.failFilters.add(filter)
         return self
     }
     
     @discardableResult
-    public func progress(_ filter: @escaping (Progress?) -> Void) -> Self {
+    public func progress(_ filter: @escaping (Progress) -> Void) -> Self {
         tuples.progressFilters.add(filter)
         return self
     }
@@ -85,52 +109,47 @@ public class Promise<Result> {
     }
     
     @discardableResult
-    public func then<T>(_ doneFilter: @escaping (Result?) throws -> T?,
-                        _ failFilter: ((Error?) -> Error?)! = nil,
-                        _ progressFilter: ((Progress?) -> Progress?)! = nil) -> Promise<T> {
-        return Deferred<T>({ [weak self] newDefer in
+    public func then<T>(_ doneFilter: @escaping (Result) throws -> T,
+                        _ failFilter: @escaping (Error) -> Error = { $0 },
+                        _ progressFilter: @escaping (Progress) -> Progress = { $0 }) -> Promise<T> {
+        return Promise<T>({ [weak self] newDefer in
             self?.done({
                 do {
                     let returned = try doneFilter($0)
-                    newDefer.resolve(with: returned)
+                    newDefer.resolve(returned)
                 }
                 catch {
-                    newDefer.reject(with: error)
+                    newDefer.reject(error)
                 }
             }).fail({
-                newDefer.reject(with: failFilter?($0))
+                newDefer.reject(failFilter($0))
             }).progress({
-                newDefer.notify(with: progressFilter?($0))
+                newDefer.notify(progressFilter($0))
             })
-            
-        }).promise()
+        })
     }
     
     @discardableResult
-    public func then<T>(_ doneFilter: @escaping (Result?) throws -> Promise<T>,
-                        _ failFilter: ((Error?) -> Error?)! = nil,
-                        _ progressFilter: ((Progress?) -> Progress?)! = nil) -> Promise<T> {
-        return Deferred<T>({ [weak self] newDefer in
+    public func then<T>(_ doneFilter: @escaping (Result) throws -> Promise<T>,
+                        _ failFilter: @escaping (Error) -> Error = { $0 },
+                        _ progressFilter: @escaping (Progress) -> Progress = { $0 }) -> Promise<T> {
+        return Promise<T>({ [weak self] newDefer in
             self?.done({ result in
                 do {
                     let returned = try doneFilter(result)
-                    returned.promise().done({ newDefer.resolve(with: $0) })
-                        .fail({ newDefer.reject(with: $0) })
-                        .progress({ newDefer.notify(with: $0) })
+                    returned.done({ newDefer.resolve($0) })
+                        .fail({ newDefer.reject($0) })
+                        .progress({ newDefer.notify($0) })
                 }
                 catch {
-                    newDefer.reject(with: error)
+                    newDefer.reject(error)
                 }
             }).fail({
-                newDefer.reject(with: failFilter?($0))
+                newDefer.reject(failFilter($0))
             }).progress({
-                newDefer.notify(with: progressFilter($0))
+                newDefer.notify(progressFilter($0))
             })
-        }).promise()
-    }
-    
-    public func promise() -> Promise<Result> {
-        return self
+        })
     }
     
 }
@@ -179,42 +198,10 @@ extension Promise : CustomStringConvertible {
     
 }
 
-
-public class Deferred<Result> : Promise<Result> {
+public extension Promise {
     
-    deinit {
-        print("deinit \(self)")
-    }
-    
-    public init(_ operation: ((_ deferred: Deferred<Result>) -> Void)! = nil) {
-        super.init()
-        operation?(self)
-    }
-    
-    @discardableResult
-    public func resolve(with result: Result?) -> Self {
-        tuples.doneFilters.fire(with: result)
-        return self
-    }
-    
-    @discardableResult
-    public func reject(with error: Error?) -> Self {
-        tuples.failFilters.fire(with: error)
-        return self
-    }
-    
-    @discardableResult
-    public func notify(with progress: Progress?) -> Self {
-        tuples.progressFilters.fire(with: progress)
-        return self
-    }
-    
-}
-
-public extension Deferred {
-    
-    public class func when<T>(_ subordinates: Promise<T> ...) -> Promise<[T?]> {
-        return Deferred<[T?]>({ deferred in
+    public class final func when<T>(_ subordinates: Promise<T> ...) -> Promise<[T?]> {
+        return Promise<[T?]>({ deferred in
             var remaining = subordinates.count
             var results = [T?](repeating: nil, count: remaining)
             
@@ -223,32 +210,28 @@ public extension Deferred {
                     results[index] = $0
                     remaining -= 1
                     if remaining == 0 {
-                        deferred.resolve(with: results)
+                        deferred.resolve(results)
                     }
                 }).fail({
-                    deferred.reject(with: $0)
+                    deferred.reject($0)
                 }).progress({
-                  deferred.notify(with: $0)
+                  deferred.notify($0)
                 })
             }
-        }).promise()
+        })
     }
-    
+
 }
 
 // MARK: - Initialization
-public extension Deferred {
+public extension Promise {
     
     convenience init(result: Result) {
-        self.init { deferred in
-            deferred.resolve(with: result)
-        }
+        self.init({ $0.resolve(result) })
     }
     
     convenience init(error: Error) {
-        self.init({ deferred in
-            deferred.reject(with: error)
-        })
+        self.init({ $0.reject(error) })
     }
     
 }
