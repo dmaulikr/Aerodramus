@@ -1,5 +1,5 @@
 //
-//  URLSessionDataPromise.swift
+//  URLDataPromise.swift
 //  Aerodramus
 //
 //  Created by 金晓龙 on 2017/8/1.
@@ -16,15 +16,15 @@ public enum JSONObject {
     
 }
 
-open class URLSessionDataPromise: Promise<Data> {
+open class URLDataPromise: Promise<Data> {
     
-    public private(set) var task: URLSessionDataTask! = nil
+    public private(set) var task: URLSessionTask! = nil
     
     typealias CompletionHandler = (Data?, URLResponse?, Error?) -> Void
     
-    init(_ ch: (@escaping CompletionHandler) -> URLSessionDataTask) {
+    init(_ ch: (@escaping CompletionHandler) -> URLSessionTask) {
         
-        var task: URLSessionDataTask!
+        var task: URLSessionTask!
         super.init({ (resolve, reject, notify) in
             task = ch({ data, response, error in
                 if let error = error {
@@ -49,7 +49,7 @@ open class URLSessionDataPromise: Promise<Data> {
     
 }
 
-public extension URLSessionDataPromise {
+public extension URLDataPromise {
     
     public var imageValue: Promise<UIImage> {
         return self.then({ data -> UIImage in

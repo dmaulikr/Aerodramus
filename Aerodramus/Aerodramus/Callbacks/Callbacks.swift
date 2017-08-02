@@ -70,9 +70,9 @@ public class Callbacks<Argument, Result> {
     
     public private(set) var options: CallbacksOptions
     
-    deinit {
-        print("deinit \(self)")
-    }
+//    deinit {
+//        print("deinit \(self)")
+//    }
     
     /// Create a callback list using CallbackOptions
     public init(options opts: CallbacksOptions) {

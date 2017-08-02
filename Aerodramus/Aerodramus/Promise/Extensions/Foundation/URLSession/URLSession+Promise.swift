@@ -10,20 +10,12 @@ import Foundation
 
 public extension URLSession {
     
-    public func prms_dataTask(with url: URL) -> URLSessionPromise {
-        return URLSessionPromise({ self.dataTask(with: url, completionHandler: $0) })
+    public func prms_dataTask(with url: URL) -> URLDataPromise {
+        return URLDataPromise({ self.dataTask(with: url, completionHandler: $0) })
     }
     
-    public func prms_dataTask(with request: URLRequest) -> URLSessionPromise {
-        return URLSessionPromise({ self.dataTask(with: request, completionHandler: $0) })
-    }
-    
-    public func prms_downloadTask(with url: URL) -> URLSessionPromise {
-        return URLSessionPromise({ ch in
-            self.downloadTask(with: url, completionHandler: { (_, response, error) in
-                ch(nil, response, error)
-            })
-        })
+    public func prms_dataTask(with request: URLRequest) -> URLDataPromise {
+        return URLDataPromise({ self.dataTask(with: request, completionHandler: $0) })
     }
     
 }

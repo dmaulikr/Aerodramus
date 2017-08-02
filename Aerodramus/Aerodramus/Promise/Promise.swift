@@ -20,9 +20,9 @@ extension PromiseSettled : CustomStringConvertible {
     var description: String {
         switch self {
         case .resolved(let value):
-            return ".resolved(\(String(describing: value)))"
+            return ".resolved(\(value))"
         case .rejected(let error):
-            return ".rejected(\(String(describing: error)))"
+            return ".rejected(\(error))"
         }
     }
     
@@ -42,7 +42,7 @@ extension PromiseStates : CustomStringConvertible {
         case .pending:
             return ".pending"
         case .settled(let settled):
-            return ".settled(\(settled))"
+            return "\(settled)"
         }
     }
     
@@ -51,9 +51,9 @@ extension PromiseStates : CustomStringConvertible {
 
 open class Promise<Result> {
     
-    deinit {
-        print("deinit \(self)")
-    }
+//    deinit {
+//        print("deinit \(self)")
+//    }
     
     private var state: PromiseStates<Result> = .pending
     

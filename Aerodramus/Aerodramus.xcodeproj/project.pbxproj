@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		5B21AE0C1F2B11D70035B82B /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21AE0B1F2B11D70035B82B /* Promise.swift */; };
-		5B397B6D1F301EDD00EC97DD /* URLSessionDataPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B397B6C1F301EDD00EC97DD /* URLSessionDataPromise.swift */; };
-		5B397B6F1F301EE900EC97DD /* URLSessionDownloadPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B397B6E1F301EE900EC97DD /* URLSessionDownloadPromise.swift */; };
+		5B397B6D1F301EDD00EC97DD /* URLDataPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B397B6C1F301EDD00EC97DD /* URLDataPromise.swift */; };
+		5B47C9931F30CE7200755AAE /* UIView+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B47C9921F30CE7200755AAE /* UIView+Promise.swift */; };
+		5B47C9991F31720D00755AAE /* Promise+After.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B47C9981F31720D00755AAE /* Promise+After.swift */; };
+		5B47C99B1F31788900755AAE /* Promise+DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B47C99A1F31788900755AAE /* Promise+DispatchQueue.swift */; };
+		5B732B221F3083190024BAB0 /* URLSession+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B397B641F3016B400EC97DD /* URLSession+Promise.swift */; };
 		5BE95E6B1F2ADB33003D4D97 /* Aerodramus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE95E611F2ADB33003D4D97 /* Aerodramus.framework */; };
 		5BE95E701F2ADB33003D4D97 /* AerodramusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE95E6F1F2ADB33003D4D97 /* AerodramusTests.swift */; };
 		5BE95E721F2ADB33003D4D97 /* Aerodramus.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BE95E641F2ADB33003D4D97 /* Aerodramus.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -31,8 +34,10 @@
 		5B397B641F3016B400EC97DD /* URLSession+Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Promise.swift"; sourceTree = "<group>"; };
 		5B397B671F3016B400EC97DD /* UIActivityIndicatorView+Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIActivityIndicatorView+Promise.swift"; sourceTree = "<group>"; };
 		5B397B691F3016B400EC97DD /* UIProgressView+Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIProgressView+Promise.swift"; sourceTree = "<group>"; };
-		5B397B6C1F301EDD00EC97DD /* URLSessionDataPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataPromise.swift; sourceTree = "<group>"; };
-		5B397B6E1F301EE900EC97DD /* URLSessionDownloadPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDownloadPromise.swift; sourceTree = "<group>"; };
+		5B397B6C1F301EDD00EC97DD /* URLDataPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLDataPromise.swift; sourceTree = "<group>"; };
+		5B47C9921F30CE7200755AAE /* UIView+Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Promise.swift"; sourceTree = "<group>"; };
+		5B47C9981F31720D00755AAE /* Promise+After.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Promise+After.swift"; sourceTree = "<group>"; };
+		5B47C99A1F31788900755AAE /* Promise+DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Promise+DispatchQueue.swift"; sourceTree = "<group>"; };
 		5BE95E611F2ADB33003D4D97 /* Aerodramus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aerodramus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BE95E641F2ADB33003D4D97 /* Aerodramus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Aerodramus.h; sourceTree = "<group>"; };
 		5BE95E651F2ADB33003D4D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -65,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				5B21AE0B1F2B11D70035B82B /* Promise.swift */,
+				5B47C9971F3171B700755AAE /* Features */,
 				5BEB27F01F2E0E5600E6DE07 /* Extensions */,
 			);
 			path = Promise;
@@ -81,8 +87,7 @@
 		5B397B631F3016B400EC97DD /* URLSession */ = {
 			isa = PBXGroup;
 			children = (
-				5B397B6C1F301EDD00EC97DD /* URLSessionDataPromise.swift */,
-				5B397B6E1F301EE900EC97DD /* URLSessionDownloadPromise.swift */,
+				5B397B6C1F301EDD00EC97DD /* URLDataPromise.swift */,
 				5B397B641F3016B400EC97DD /* URLSession+Promise.swift */,
 			);
 			path = URLSession;
@@ -93,6 +98,7 @@
 			children = (
 				5B397B661F3016B400EC97DD /* UIActivityIndicatorView */,
 				5B397B681F3016B400EC97DD /* UIProgressView */,
+				5B47C9911F30CE5700755AAE /* UIView */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -111,6 +117,23 @@
 				5B397B691F3016B400EC97DD /* UIProgressView+Promise.swift */,
 			);
 			path = UIProgressView;
+			sourceTree = "<group>";
+		};
+		5B47C9911F30CE5700755AAE /* UIView */ = {
+			isa = PBXGroup;
+			children = (
+				5B47C9921F30CE7200755AAE /* UIView+Promise.swift */,
+			);
+			path = UIView;
+			sourceTree = "<group>";
+		};
+		5B47C9971F3171B700755AAE /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				5B47C9981F31720D00755AAE /* Promise+After.swift */,
+				5B47C99A1F31788900755AAE /* Promise+DispatchQueue.swift */,
+			);
+			path = Features;
 			sourceTree = "<group>";
 		};
 		5BE95E571F2ADB32003D4D97 = {
@@ -279,8 +302,11 @@
 			files = (
 				5BE95E7D1F2ADBBF003D4D97 /* Callbacks.swift in Sources */,
 				5B21AE0C1F2B11D70035B82B /* Promise.swift in Sources */,
-				5B397B6D1F301EDD00EC97DD /* URLSessionDataPromise.swift in Sources */,
-				5B397B6F1F301EE900EC97DD /* URLSessionDownloadPromise.swift in Sources */,
+				5B47C9991F31720D00755AAE /* Promise+After.swift in Sources */,
+				5B47C9931F30CE7200755AAE /* UIView+Promise.swift in Sources */,
+				5B397B6D1F301EDD00EC97DD /* URLDataPromise.swift in Sources */,
+				5B732B221F3083190024BAB0 /* URLSession+Promise.swift in Sources */,
+				5B47C99B1F31788900755AAE /* Promise+DispatchQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
